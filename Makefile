@@ -21,6 +21,9 @@ LIBFTDIR = ./libft
 
 SRCS	=	main.c\
 			utilities.c \
+			init.c \
+			philo_func.c \
+			theards.c \
 
 OBJ	=	$(SRCS:%.c=%.o)
 

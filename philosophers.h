@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdogadin <mdogadin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/13 14:45:41 by mdogadin          #+#    #+#             */
+/*   Updated: 2024/02/13 14:45:41 by mdogadin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -11,7 +23,7 @@
 # define UNLOCK 1
 # define LOCK 0
 
-struct s_env;
+struct	s_env;
 
 typedef struct s_philo
 {
@@ -41,9 +53,13 @@ typedef struct s_env
 	pthread_mutex_t	writing;
 }				t_env;
 
-int ft_error(char *mess);
-unsigned int get_time();
-void new_sleep(unsigned long duration, t_env *env);
-void philo_print(char *msg, t_philo *philo, int unlock)
+int				ft_error(char *mess);
+int				start_threads(t_env *env);
+int				ft_init(t_env *env);
+void			new_sleep(unsigned long duration, t_env *env);
+void			philo_print(char *msg, t_philo *philo, int unlock);
+void			philo_dead(t_env *env, t_philo *philo);
+void			philo_eat(t_philo *philo);
+unsigned int	get_time(void);
 
 #endif
