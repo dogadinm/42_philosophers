@@ -23,7 +23,7 @@
 # define UNLOCK 1
 # define LOCK 0
 
-struct	s_env;
+struct	s_info;
 
 typedef struct s_philo
 {
@@ -33,11 +33,11 @@ typedef struct s_philo
 	int				rfork;
 	int				lfork;
 	unsigned long	last_ate;
-	struct s_env	*env;
+	struct s_info	*info;
 	pthread_t		thread_id;
 }				t_philo;
 
-typedef struct s_env
+typedef struct s_info
 {
 	int				count;
 	int				time_to_die;
@@ -51,15 +51,15 @@ typedef struct s_env
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	meal;
 	pthread_mutex_t	writing;
-}				t_env;
+}				t_info;
 
 int				ft_error(char *mess);
-int				start_threads(t_env *env);
-int				ft_init(t_env *env);
-void			new_sleep(unsigned long duration, t_env *env);
-void			philo_print(char *msg, t_philo *philo, int unlock);
-void			philo_dead(t_env *env, t_philo *philo);
+int				start_threads(t_info *info);
+int				ft_init(t_info *info);
+void			ft_sleep(unsigned long duration, t_info *info);
+void			print_msg(char *msg, t_philo *philo, int unlock);
+void			death(t_info *info, t_philo *philo);
 void			philo_eat(t_philo *philo);
-unsigned int	get_time(void);
+unsigned int	ft_time_now(void);
 
 #endif

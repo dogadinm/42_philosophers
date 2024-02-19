@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-unsigned int	get_time(void)
+unsigned int	ft_time_now(void)
 {
 	struct timeval	time;
 
@@ -20,16 +20,16 @@ unsigned int	get_time(void)
 	return ((time.tv_sec * (unsigned long)1000) + (time.tv_usec / 1000));
 }
 
-void	new_sleep(unsigned long duration, t_env *env)
+void	ft_sleep(unsigned long duration, t_info *info)
 {
 	unsigned long	start;
 
-	start = get_time();
-	while (!env->stop_condition)
+	start = ft_time_now();
+	while (!info->stop_condition)
 	{
-		if (get_time() - start >= duration)
+		if (ft_time_now() - start >= duration)
 			break ;
-		usleep(env->count * 2);
+		usleep(1);
 	}
 }
 

@@ -12,57 +12,58 @@
 
 #include "philosophers.h"
 
-void	philo_print(char *msg, t_philo *philo, int unlock)
+void	print_msg(char *msg, t_philo *philo, int unlock)
 {
 	char	*timestamp;
 
-	timestamp = ft_itoa(get_time() - philo->env->start_time);
-	pthread_mutex_lock(&philo->env->writing);
-	if (!philo->env->stop_condition && !philo->env->max_ate)
+	timestamp = ft_itoa(ft_time_now() - philo->info->start_time);
+	pthread_mutex_lock(&philo->info->writing);
+	if (!philo->info->stop_condition && !philo->info->max_ate)
 		ft_printf("%s %s %s\n", timestamp, philo->pos_str, msg);
 	if (unlock)
-		pthread_mutex_unlock(&philo->env->writing);
+		pthread_mutex_unlock(&philo->info->writing);
 	free(timestamp);
 }
 
 void	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->env->forks[philo->rfork]);
-	philo_print("has taken a fork", philo, UNLOCK);
-	pthread_mutex_lock(&philo->env->forks[philo->lfork]);
-	philo_print("has taken a fork", philo, UNLOCK);
-	philo_print("is eating", philo, UNLOCK);
-	philo->last_ate = get_time();
-	pthread_mutex_unlock(&philo->env->meal);
-	new_sleep(philo->env->time_to_eat, philo->env);
+	pthread_mutex_lock(&philo->info->forks[philo->rfork]);
+	print_msg("has taken a fork", philo, UNLOCK);
+	pthread_mutex_lock(&philo->info->forks[philo->lfork]);
+	print_msg("has taken a fork", philo, UNLOCK);
+	print_msg("is eating", philo, UNLOCK);
+	philo->last_ate = ft_time_now();
+	ft_sleep(philo->info->time_to_eat, philo->info);
+	
+	
 	philo->ate_times++;
-	pthread_mutex_unlock(&philo->env->forks[philo->lfork]);
-	pthread_mutex_unlock(&philo->env->forks[philo->rfork]);
+	pthread_mutex_unlock(&philo->info->forks[philo->lfork]);
+	pthread_mutex_unlock(&philo->info->forks[philo->rfork]);
 }
 
-void	philo_dead(t_env *env, t_philo *philo)
+void	death(t_info *info, t_philo *philo)
 {
 	int	i;
 
-	while (!env->max_ate)
+	while (!info->max_ate)
 	{
 		i = -1;
-		while (++i < env->count && !env->stop_condition)
+		while (++i < info->count && !info->stop_condition)
 		{
-			pthread_mutex_lock(&env->meal);
-			if ((int)(get_time() - philo[i].last_ate) >= env->time_to_die)
+			pthread_mutex_lock(&info->meal);
+			if ((int)(ft_time_now() - philo[i].last_ate) >= info->time_to_die)
 			{
-				philo_print("died", &philo[i], LOCK);
-				env->stop_condition = 1;
+				print_msg("died", &philo[i], LOCK);
+				info->stop_condition = 1;
 			}
-			pthread_mutex_unlock(&env->meal);
+			pthread_mutex_unlock(&info->meal);
 		}
-		if (env->stop_condition)
+		if (info->stop_condition)
 			break ;
 		i = 0;
-		while (env->eat_count_max && i < env->count
-			&& philo[i].ate_times >= env->eat_count_max)
+		while (info->eat_count_max && i < info->count
+			&& philo[i].ate_times >= info->eat_count_max)
 			i++;
-		env->max_ate = (i == env->count);
+		info->max_ate = (i == info->count);
 	}
 }
