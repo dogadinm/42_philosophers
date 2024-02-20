@@ -25,17 +25,17 @@ void	print_msg(char *msg, t_philo *philo, int unlock)
 	free(timestamp);
 }
 
-void	philo_eat(t_philo *philo)
+void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->forks[philo->rfork]);
 	print_msg("has taken a fork", philo, UNLOCK);
 	pthread_mutex_lock(&philo->info->forks[philo->lfork]);
 	print_msg("has taken a fork", philo, UNLOCK);
+	pthread_mutex_lock(&philo->info->meal);
 	print_msg("is eating", philo, UNLOCK);
 	philo->last_ate = ft_time_now();
+	pthread_mutex_unlock(&philo->info->meal);
 	ft_sleep(philo->info->time_to_eat, philo->info);
-	
-	
 	philo->ate_times++;
 	pthread_mutex_unlock(&philo->info->forks[philo->lfork]);
 	pthread_mutex_unlock(&philo->info->forks[philo->rfork]);

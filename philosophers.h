@@ -59,7 +59,7 @@ int				ft_init(t_info *info);
 void			ft_sleep(unsigned long duration, t_info *info);
 void			print_msg(char *msg, t_philo *philo, int unlock);
 void			death(t_info *info, t_philo *philo);
-void			philo_eat(t_philo *philo);
+void			eat(t_philo *philo);
 unsigned int	ft_time_now(void);
 
 #endif
