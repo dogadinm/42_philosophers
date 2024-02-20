@@ -23,20 +23,15 @@ void	*routine(void *params)
 		ft_sleep(info->time_to_eat / 50, info);
 	while (!info->stop_condition && !info->max_ate)
 	{
-		eat(philo);
+		eat(philo);	
 		print_msg("is sleeping", philo, UNLOCK);
 		ft_sleep(info->time_to_sleep, info);
+		print_msg("is thinking", philo, UNLOCK);
 		if (info->eat_count_max)
 		{
 			if (philo->ate_times >= info->eat_count_max)
 				break;
 		}
-		print_msg("is thinking", philo, UNLOCK);
-		// if (info->eat_count_max)
-		// {
-		// 	if (philo->ate_times >= info->eat_count_max)
-		// 		break;
-		// }
 	}
 	return (NULL);
 }

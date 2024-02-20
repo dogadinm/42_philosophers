@@ -29,7 +29,7 @@ void	ft_sleep(unsigned long duration, t_info *info)
 	{
 		if (ft_time_now() - start >= duration)
 			break ;
-		usleep(1);
+		usleep(duration / 10);
 	}
 }
 
